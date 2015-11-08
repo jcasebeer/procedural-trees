@@ -98,7 +98,7 @@ def main():
     speed = 4.
 
     # start pygame w/ opengl enabled
-    pygame.init()
+    pygame.display.init()
     pygame.display.set_mode(display,DOUBLEBUF|OPENGL)
 
     # generate a tree and stick it in a display list
