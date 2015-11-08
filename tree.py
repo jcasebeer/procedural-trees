@@ -100,6 +100,8 @@ def main():
     # start pygame w/ opengl enabled
     pygame.display.init()
     pygame.display.set_mode(display,DOUBLEBUF|OPENGL)
+    pygame.display.set_caption("3d Procedural Trees| WASD to move| Arrows to aim camera")
+
 
     # opengl stuff
     glEnable(GL_DEPTH_TEST)
@@ -177,7 +179,7 @@ def main():
             z+view_height+lengthdir_y(1,vdir),
             0.,0.,1.
         )
-        
+
         # draw our tree
         glCallList(model_tree)
         glPopMatrix()
