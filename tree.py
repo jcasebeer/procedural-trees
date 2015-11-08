@@ -101,6 +101,14 @@ def main():
     pygame.display.init()
     pygame.display.set_mode(display,DOUBLEBUF|OPENGL)
 
+    # opengl stuff
+    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_FOG)
+    glFogf(GL_FOG_START,0.)
+    glFogf(GL_FOG_END,512.)
+    glFogi(GL_FOG_MODE,GL_LINEAR)
+    glFogfv(GL_FOG_COLOR,(0.,0.,0.))
+
     # generate a tree and stick it in a display list
     # for speed
     model_tree = glGenLists(1)
@@ -147,17 +155,19 @@ def main():
         if vdir<-89: vdir = -89
         if vdir>89: vdir = 89
 
-        # opengl stuff
-        glMatrixMode(GL_MODELVIEW)
-        glEnable(GL_DEPTH_TEST)
+        # clear the screen and reset transformations
         glClearColor(0.25,0.0625,0.125,1.0)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glPushMatrix()
 
         # set camera apeture, aspect ratio, clipping planes
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
         gluPerspective(90,aspect,0.1,32000.0)
 
         # point the camera, z+ is the up vector
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
         gluLookAt(
             x,
             y,
@@ -167,6 +177,7 @@ def main():
             z+view_height+lengthdir_y(1,vdir),
             0.,0.,1.
         )
+        
         # draw our tree
         glCallList(model_tree)
         glPopMatrix()
