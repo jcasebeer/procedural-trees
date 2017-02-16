@@ -83,6 +83,42 @@ def moveDir(dir,speed,x,y):
     y+=yChange
     return (x,y)
 
+def draw_billboard(x,y,z):
+    glPushMatrix()
+    glTranslatef(x,y,z)
+    glPushMatrix()
+    mat = glGetFloatv(GL_MODELVIEW_MATRIX)
+           
+    mat[0][0] = 1.
+    mat[0][1] = 0.
+    mat[0][2] = 0.
+
+    mat[1][0] = 0.
+    mat[1][1] = 1.
+    mat[1][2] = 0.
+
+    mat[2][0] = 0.
+    mat[2][1] = 0.
+    mat[2][2] = 1.
+
+    glLoadMatrixf(mat)
+    glBegin(GL_TRIANGLE_FAN)
+    glColor3f(1,0,0)
+    glVertex3f(-8,+8,0)
+    glColor3f(0,1,0)
+    glVertex3f(+8,+8,0)
+    glColor3f(0,0,1)
+    glVertex3f(+8,-8,0)
+    glColor3f(1,1,1)
+    glVertex3f(-8,-8,0)
+    glEnd()
+    glPopMatrix()
+    glPopMatrix()
+    
+    
+    
+
+
 def main():
     # set up pygame/opengl stuff
     display = (800,600)
@@ -160,7 +196,7 @@ def main():
         # clear the screen and reset transformations
         glClearColor(0.25,0.0625,0.125,1.0)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        glPushMatrix()
+        #glPushMatrix()
 
         # set camera apeture, aspect ratio, clipping planes
         glMatrixMode(GL_PROJECTION)
@@ -181,9 +217,14 @@ def main():
         )
 
         # draw our tree
+        glPushMatrix()
+        glTranslatef(0,0,0)
         glCallList(model_tree)
         glPopMatrix()
-
+        draw_billboard(100,0,8)
+        draw_billboard(0,-100,8)
+        draw_billboard(-100,0,8)
+        draw_billboard(0,100,8)
         # refresh the window and limit framerate
         pygame.display.flip()
         pygame.time.delay(16)
